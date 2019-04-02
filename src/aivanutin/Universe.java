@@ -22,10 +22,10 @@ public class Universe {
         StdDraw.enableDoubleBuffering();
     }
 
-    public void Randomize() {
+    public void Randomize(double generationKey) {
         for (int i = 1; i < height - 1; i++) {
             for (int j = 1; j < width - 1; j++) {
-                gen[i][j] = (int) (Math.round(Math.random()));
+                gen[i][j] = (int) (Math.round(Math.random()-generationKey));
             }
         }
     }
@@ -61,7 +61,7 @@ public class Universe {
 
     private void Update() {
         for (int i = 0; i < height; i++) {
-            System.arraycopy(nextGen[i],0,gen[i],0,width);
+            System.arraycopy(nextGen[i], 0, gen[i], 0, width);
         }
     }
 
@@ -76,7 +76,7 @@ public class Universe {
             }
         }
         String time = "Frame: " + Frame + "ms";
-        String fps = "Fps: " + (int)(1000.0 / Frame);
+        String fps = "Fps: " + (int) (1000.0 / Frame);
         StdDraw.textLeft(20, 20, time);
         StdDraw.textLeft(20, 40, fps);
         StdDraw.show();
