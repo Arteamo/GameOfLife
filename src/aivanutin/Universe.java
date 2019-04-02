@@ -8,8 +8,8 @@ import java.lang.Math;
 public class Universe {
     private int width;
     private int height;
-    private int gen[][];
-    private int nextGen[][];
+    private int[][] gen;
+    private int[][] nextGen;
 
     public Universe(int height, int width) {
         this.width = width;
@@ -30,7 +30,7 @@ public class Universe {
         }
     }
 
-    public int GetNeibourghs(int i, int j) {
+    private int GetNeibourghs(int i, int j) {
         int cnt = 0;
         if (gen[i - 1][j - 1] == 1) cnt++;
         if (gen[i - 1][j] == 1) cnt++;
@@ -59,14 +59,13 @@ public class Universe {
         Update();
     }
 
-    public void Update()
-    {
+    private void Update() {
         for (int i = 0; i < height; i++) {
             System.arraycopy(nextGen[i],0,gen[i],0,width);
         }
     }
 
-    public void Draw() {
+    public void Draw(long Frame) {
         StdDraw.clear(Color.WHITE);
         StdDraw.setPenColor(Color.BLACK);
         for (int i = 0; i < height; i++) {
@@ -76,6 +75,10 @@ public class Universe {
                 }
             }
         }
+        String time = "Frame: " + Frame + "ms";
+        String fps = "Fps: " + (int)(1000.0 / Frame);
+        StdDraw.textLeft(20, 20, time);
+        StdDraw.textLeft(20, 40, fps);
         StdDraw.show();
     }
 }
