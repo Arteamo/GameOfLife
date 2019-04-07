@@ -4,12 +4,12 @@ import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
 
-public class UI {
+public class Utility {
 
-    public UI() {
+    public Utility() {
     }
 
-    public static void ShowFps(long Frame) {
+    static void ShowFps(long Frame) {
         StdDraw.setPenColor(Color.BLUE);
         String time = "Frame: " + Frame + "ms";
         String fps = "Fps: " + (int) (1000.0 / Frame);
@@ -23,4 +23,3 @@ public class UI {
         }
     }
 }
-//implement pause with ^
