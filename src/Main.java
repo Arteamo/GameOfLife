@@ -1,6 +1,5 @@
 import aivanutin.Universe;
 import aivanutin.Utility;
-import edu.princeton.cs.introcs.StdDraw;
 
 public class Main {
 
