@@ -21,7 +21,7 @@ public class Universe {
         StdDraw.enableDoubleBuffering();
     }
 
-    public void Randomize(double generationKey) {
+    public void randomize(double generationKey) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 gen[i][j] = (int) (Math.round(Math.random() - generationKey));
@@ -29,97 +29,81 @@ public class Universe {
         }
     }
 
-    /*public void CreateGlider(int i, int j) {
-        gen[i][j] = 1;
-        gen[i + 1][j + 1] = 1;
-        gen[i + 1][j + 2] = 1;
-        gen[i][j + 2] = 1;
-        gen[i - 1][j + 2] = 1;
-    }*/
+    public void createGlider(int x) {
+        gen[x][x] = 1;
+        gen[x + 1][x + 1] = 1;
+        gen[x + 1][x + 2] = 1;
+        gen[x][x + 2] = 1;
+        gen[x - 1][x + 2] = 1;
+    }
 
-    private int GetNeibourghs(int iTop, int iMid, int iBot, int jLeft, int jMid, int jRight) {
+    private int getNeighbours(int iTop, int iMid, int iBot, int jLeft, int jMid, int jRight) {
         int cnt = 0;
-        if (gen[iTop][jLeft] == 1) {
-            cnt++;
-        }
-        if (gen[iTop][jMid] == 1) {
-            cnt++;
-        }
-        if (gen[iTop][jRight] == 1) {
-            cnt++;
-        }
-        if (gen[iMid][jLeft] == 1) {
-            cnt++;
-        }
-        if (gen[iMid][jRight] == 1) {
-            cnt++;
-        }
-        if (gen[iBot][jLeft] == 1) {
-            cnt++;
-        }
-        if (gen[iBot][jMid] == 1) {
-            cnt++;
-        }
-        if (gen[iBot][jRight] == 1) {
-            cnt++;
-        }
+        cnt += gen[iTop][jLeft];
+        cnt += gen[iTop][jMid];
+        cnt += gen[iTop][jRight];
+        cnt += gen[iMid][jLeft];
+        cnt += gen[iMid][jRight];
+        cnt += gen[iBot][jLeft];
+        cnt += gen[iBot][jMid];
+        cnt += gen[iBot][jRight];
         return cnt;
     }
 
-    private int GetNeibourghsTorus(int i, int j) {
+    private int getNeighboursTorus(int i, int j) {
         int cnt = 0;
         if ((i != 0) && (i != height - 1) && (j != 0) && (j != width - 1)) {
-            cnt = GetNeibourghs(i - 1, i, i + 1, j - 1, j, j + 1);
+            cnt = getNeighbours(i - 1, i, i + 1, j - 1, j, j + 1);
         }
         if ((i == 0) && (j == 0)) {
-            cnt = GetNeibourghs(height - 1, 0, i + 1, width - 1, 0, j + 1);
+            cnt = getNeighbours(height - 1, 0, i + 1, width - 1, 0, j + 1);
         }
         if ((i == 0) && ((j != 0) && (j != width - 1))) {
-            cnt = GetNeibourghs(height - 1, 0, i + 1, j - 1, j, j + 1);
+            cnt = getNeighbours(height - 1, 0, i + 1, j - 1, j, j + 1);
         }
         if ((i == 0) && (j == width - 1)) {
-            cnt = GetNeibourghs(height - 1, 0, i + 1, j - 1, 0, 0);
+            cnt = getNeighbours(height - 1, 0, i + 1, j - 1, 0, 0);
         }
         if (((i != 0) && (i != height - 1)) && (j == 0)) {
-            cnt = GetNeibourghs(i + 1, i, i - 1, width - 1, 0, 1);
+            cnt = getNeighbours(i + 1, i, i - 1, width - 1, 0, 1);
         }
         if (((i != 0) && (i != height - 1)) && (j == width - 1)) {
-            cnt = GetNeibourghs(i + 1, i, i - 1, j - 1, j, 0);
+            cnt = getNeighbours(i + 1, i, i - 1, j - 1, j, 0);
         }
         if ((i == height - 1) && (j == 0)) {
-            cnt = GetNeibourghs(i - 1, i, 0, width - 1, 0, j + 1);
+            cnt = getNeighbours(i - 1, i, 0, width - 1, 0, j + 1);
         }
         if ((i == height - 1) && ((j != 0) && (j != width - 1))) {
-            cnt = GetNeibourghs(i - 1, i, 0, j - 1, j, j + 1);
+            cnt = getNeighbours(i - 1, i, 0, j - 1, j, j + 1);
         }
         if ((i == height - 1) && (j == width - 1)) {
-            cnt = GetNeibourghs(i - 1, i, 0, j - 1, j, 0);
+            cnt = getNeighbours(i - 1, i, 0, j - 1, j, 0);
         }
         return cnt;
     }
 
-    public void GetNextGen() {
-        int neibourghs;
+    public void getNextGen() {
+        int neighbours;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                neibourghs = GetNeibourghsTorus(i, j);
-                if (((gen[i][j] == 1) && (neibourghs == 2)) || (neibourghs == 3)) {
+                neighbours = getNeighboursTorus(i, j);
+                if (((gen[i][j] == 1) && (neighbours == 2)) || (neighbours == 3)) {
                     nextGen[i][j] = 1;
                 } else {
                     nextGen[i][j] = 0;
                 }
             }
         }
-        Update();
+        update();
     }
 
-    private void Update() {
+    private void update() {
         for (int i = 0; i < height; i++) {
             System.arraycopy(nextGen[i], 0, gen[i], 0, width);
         }
     }
 
-    public void Draw(long Frame) {
+    public void draw(long frame) {
         StdDraw.clear(Color.WHITE);
         StdDraw.setPenColor(Color.BLACK);
         for (int i = 0; i < height; i++) {
@@ -129,7 +113,7 @@ public class Universe {
                 }
             }
         }
-        Utility.ShowFps(Frame);
+        Utility.showFps(frame);
         StdDraw.show();
     }
 }

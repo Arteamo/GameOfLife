@@ -1,6 +1,5 @@
 import aivanutin.Universe;
 import aivanutin.Utility;
-import edu.princeton.cs.introcs.StdDraw;
 
 public class Main {
 
@@ -9,15 +8,15 @@ public class Main {
         final int UNIVERSE_X = 1200;
         final int UNIVERSE_Y = 800;
         Universe world = new Universe(UNIVERSE_Y, UNIVERSE_X);
-        long Frame = 0;
+        long frame = 0;
 
-        world.Randomize(0);
+        world.randomize(0);
         while (true) {
-            Utility.Pause();
+            Utility.pause();
             long Start = System.currentTimeMillis();
-            world.Draw(Frame);
-            world.GetNextGen();
-            Frame = System.currentTimeMillis() - Start;
+            world.draw(frame);
+            world.getNextGen();
+            frame = System.currentTimeMillis() - Start;
         }
     }
 }
