@@ -29,12 +29,12 @@ public class Universe {
         }
     }
 
-    public void createGlider(int x) {
-        gen[x][x] = 1;
-        gen[x + 1][x + 1] = 1;
-        gen[x + 1][x + 2] = 1;
-        gen[x][x + 2] = 1;
-        gen[x - 1][x + 2] = 1;
+    public void createGlider(int i, int j) {
+        gen[i][j] = 1;
+        gen[i + 1][j + 1] = 1;
+        gen[i + 1][j + 2] = 1;
+        gen[i][j + 2] = 1;
+        gen[i - 1][j + 2] = 1;
     }
 
     private int getNeighbours(int iTop, int iMid, int iBot, int jLeft, int jMid, int jRight) {
