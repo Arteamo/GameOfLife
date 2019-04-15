@@ -11,13 +11,19 @@ import java.util.Set;
 public class BorderlessUniverse {
     private Set<Cell> universe;
     private Map<Cell, Integer> neighbourCounter;
+    private int xShift;
+    private int yShift;
+    private int scale;
 
     public BorderlessUniverse() {
         universe = new HashSet<>();
         neighbourCounter = new HashMap<>();
+        xShift = 0;
+        yShift = 0;
+        scale = 800;
         StdDraw.setCanvasSize(800, 800);
-        StdDraw.setXscale(0, 1000);
-        StdDraw.setYscale(0, 800);
+        StdDraw.setXscale(0, scale);
+        StdDraw.setYscale(0, scale);
         StdDraw.setPenColor(Color.BLACK);
         StdDraw.enableDoubleBuffering();
     }
@@ -28,16 +34,18 @@ public class BorderlessUniverse {
         universe.add(new Cell(i + 1, j + 2));
         universe.add(new Cell(i, j + 2));
         universe.add(new Cell(i - 1, j + 2));
-
-        universe.add(new Cell(i + 40, j + 50));
-        universe.add(new Cell(i + 40, j + 51));
-        universe.add(new Cell(i + 41, j + 50));
-        universe.add(new Cell(i + 41, j + 51));
     }
 
-    //TODO: random generation
     public void randomize() {
-        
+        int chance;
+        for (int i = 200; i < 600; i++) {
+            for (int j = 200; j < 600; j++) {
+                chance = (int) (Math.round(Math.random()));
+                if (chance == 1) {
+                    universe.add(new Cell(i, j));
+                }
+            }
+        }
     }
 
     public void getNextGen() {
@@ -94,14 +102,45 @@ public class BorderlessUniverse {
         }
     }
 
+    private void controls() {
+        if (StdDraw.isKeyPressed(68)) { // D
+            xShift += 10;
+        } else {
+            if (StdDraw.isKeyPressed(65)) { // A
+                xShift -= 10;
+            }
+        }
+        if (StdDraw.isKeyPressed(83)) { // S
+            yShift -= 10;
+        } else {
+            if (StdDraw.isKeyPressed(87)) { // W
+                yShift += 10;
+            }
+        }
+        if (StdDraw.isKeyPressed(81)) {  // Q
+            scale += 100;
+            StdDraw.setXscale(0, scale);
+            StdDraw.setYscale(0, scale);
+        } else {
+            if (StdDraw.isKeyPressed(69)) { // E
+                if (scale > 100) {
+                    scale -= 100;
+                    StdDraw.setXscale(0, scale);
+                    StdDraw.setYscale(0, scale);
+                }
+            }
+        }
+    }
+
     public void draw() {
-        StdDraw.clear(Color.WHITE);
         int x;
         int y;
+        StdDraw.clear(Color.WHITE);
+        controls();
         for (Cell c : universe) {
             x = c.getX();
             y = c.getY();
-            StdDraw.filledRectangle(x, y, 0.5, 0.5);
+            StdDraw.filledRectangle(x - xShift, y - yShift, 0.5, 0.5);
         }
         StdDraw.show();
     }

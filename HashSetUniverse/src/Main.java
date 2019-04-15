@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         BorderlessUniverse universe = new BorderlessUniverse();
 
-        universe.createGlider(10, 10);
+        universe.randomize();
 
         while (true) {
             universe.draw();
