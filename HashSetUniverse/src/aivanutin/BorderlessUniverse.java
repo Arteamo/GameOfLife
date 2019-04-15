@@ -22,8 +22,8 @@ public class BorderlessUniverse {
         yShift = 0;
         scale = 800;
         StdDraw.setCanvasSize(800, 800);
-        StdDraw.setXscale(0, scale);
-        StdDraw.setYscale(0, scale);
+        StdDraw.setXscale(-scale/2, scale/2);
+        StdDraw.setYscale(-scale/2, scale/2);
         StdDraw.setPenColor(Color.BLACK);
         StdDraw.enableDoubleBuffering();
     }
@@ -38,8 +38,8 @@ public class BorderlessUniverse {
 
     public void randomize() {
         int chance;
-        for (int i = 200; i < 600; i++) {
-            for (int j = 200; j < 600; j++) {
+        for (int i = -200; i < 200; i++) {
+            for (int j = -200; j < 200; j++) {
                 chance = (int) (Math.round(Math.random()));
                 if (chance == 1) {
                     universe.add(new Cell(i, j));
@@ -119,14 +119,14 @@ public class BorderlessUniverse {
         }
         if (StdDraw.isKeyPressed(81)) {  // Q
             scale += 100;
-            StdDraw.setXscale(0, scale);
-            StdDraw.setYscale(0, scale);
+            StdDraw.setXscale(-scale/2, scale/2);
+            StdDraw.setYscale(-scale/2, scale/2);
         } else {
             if (StdDraw.isKeyPressed(69)) { // E
                 if (scale > 100) {
                     scale -= 100;
-                    StdDraw.setXscale(0, scale);
-                    StdDraw.setYscale(0, scale);
+                    StdDraw.setXscale(-scale/2, scale/2);
+                    StdDraw.setYscale(-scale/2, scale/2);
                 }
             }
         }
