@@ -12,12 +12,12 @@ public class Main {
         long frame;
         BorderlessUniverse universe = new BorderlessUniverse();
 
-        universe.randomize();
+        universe.randomize(1);
 
         while (true) {
             start = System.currentTimeMillis();
-            universe.getNextGen();
             universe.draw();
+            universe.getNextGen();
             frame = System.currentTimeMillis() - start;
             universe.fps(frame);
         }

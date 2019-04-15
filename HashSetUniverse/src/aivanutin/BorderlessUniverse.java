@@ -42,12 +42,12 @@ public class BorderlessUniverse {
 //        universe.add(new Cell(i - 1, j + 2));
 //    }
 
-    public void randomize() {
-        int chance;
+    public void randomize(double density) {
+        double chance;
         for (int i = -200; i < 200; i++) {
             for (int j = -200; j < 200; j++) {
-                chance = (int) (Math.round(Math.random()));
-                if (chance == 1) {
+                chance = Math.random();
+                if (chance >= (1 - density)) {
                     universe.add(new Cell(i, j));
                 }
             }
