@@ -44,8 +44,8 @@ public class BorderlessUniverse {
 
     public void randomize() {
         int chance;
-        for (int i = -300; i < 300; i++) {
-            for (int j = -300; j < 300; j++) {
+        for (int i = -200; i < 200; i++) {
+            for (int j = -200; j < 200; j++) {
                 chance = (int) (Math.round(Math.random()));
                 if (chance == 1) {
                     universe.add(new Cell(i, j));

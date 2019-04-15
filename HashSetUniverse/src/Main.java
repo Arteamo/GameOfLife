@@ -15,8 +15,8 @@ public class Main {
         universe.randomize();
 
         while (true) {
-            universe.getNextGen();
             start = System.currentTimeMillis();
+            universe.getNextGen();
             universe.draw();
             frame = System.currentTimeMillis() - start;
             universe.fps(frame);
