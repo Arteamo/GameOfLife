@@ -1,6 +1,10 @@
-package aivanutin;
+/*
+ * Developed by Artyom Ivanyutin on 15.04.19 20:05.
+ * Copyright (c) 2019.
+ * All rights reserved.
+ */
 
-import java.util.Objects;
+package aivanutin;
 
 class Cell {
     private int x;
@@ -29,10 +33,9 @@ class Cell {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
-//        int result = x;
-//        result = 31 * result + y;
-//        return result;
+        int result = x;
+        result = 31 * result + y;
+        return result;
     }
 
     Cell[] localRegion() {

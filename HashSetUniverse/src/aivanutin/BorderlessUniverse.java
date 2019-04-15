@@ -1,3 +1,9 @@
+/*
+ * Developed by Artyom Ivanyutin on 15.04.19 20:05.
+ * Copyright (c) 2019.
+ * All rights reserved.
+ */
+
 package aivanutin;
 
 import edu.princeton.cs.introcs.StdDraw;
@@ -22,24 +28,24 @@ public class BorderlessUniverse {
         yShift = 0;
         scale = 800;
         StdDraw.setCanvasSize(800, 800);
-        StdDraw.setXscale(-scale/2, scale/2);
-        StdDraw.setYscale(-scale/2, scale/2);
+        StdDraw.setXscale(-scale / 2, scale / 2);
+        StdDraw.setYscale(-scale / 2, scale / 2);
         StdDraw.setPenColor(Color.BLACK);
         StdDraw.enableDoubleBuffering();
     }
 
-    public void createGlider(int i, int j) {
-        universe.add(new Cell(i, j));
-        universe.add(new Cell(i + 1, j + 1));
-        universe.add(new Cell(i + 1, j + 2));
-        universe.add(new Cell(i, j + 2));
-        universe.add(new Cell(i - 1, j + 2));
-    }
+//    public void createGlider(int i, int j) {
+//        universe.add(new Cell(i, j));
+//        universe.add(new Cell(i + 1, j + 1));
+//        universe.add(new Cell(i + 1, j + 2));
+//        universe.add(new Cell(i, j + 2));
+//        universe.add(new Cell(i - 1, j + 2));
+//    }
 
     public void randomize() {
         int chance;
-        for (int i = -200; i < 200; i++) {
-            for (int j = -200; j < 200; j++) {
+        for (int i = -300; i < 300; i++) {
+            for (int j = -300; j < 300; j++) {
                 chance = (int) (Math.round(Math.random()));
                 if (chance == 1) {
                     universe.add(new Cell(i, j));
@@ -119,14 +125,14 @@ public class BorderlessUniverse {
         }
         if (StdDraw.isKeyPressed(81)) {  // Q
             scale += 100;
-            StdDraw.setXscale(-scale/2, scale/2);
-            StdDraw.setYscale(-scale/2, scale/2);
+            StdDraw.setXscale(-scale / 2, scale / 2);
+            StdDraw.setYscale(-scale / 2, scale / 2);
         } else {
             if (StdDraw.isKeyPressed(69)) { // E
                 if (scale > 100) {
                     scale -= 100;
-                    StdDraw.setXscale(-scale/2, scale/2);
-                    StdDraw.setYscale(-scale/2, scale/2);
+                    StdDraw.setXscale(-scale / 2, scale / 2);
+                    StdDraw.setYscale(-scale / 2, scale / 2);
                 }
             }
         }
@@ -142,6 +148,13 @@ public class BorderlessUniverse {
             y = c.getY();
             StdDraw.filledRectangle(x - xShift, y - yShift, 0.5, 0.5);
         }
+
         StdDraw.show();
+    }
+
+    public void fps(long frame) {
+        String time = "Frame: " + frame + "ms ";
+        String fps = "Fps: " + (int) (1000.0 / frame);
+        System.out.println(time + " " + fps);
     }
 }
