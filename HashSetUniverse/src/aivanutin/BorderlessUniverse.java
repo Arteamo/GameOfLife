@@ -16,10 +16,10 @@ public class BorderlessUniverse {
         universe = new HashSet<>();
         neighbourCounter = new HashMap<>();
         StdDraw.setCanvasSize(800, 800);
-        StdDraw.setXscale(0, 800);
+        StdDraw.setXscale(0, 1000);
         StdDraw.setYscale(0, 800);
         StdDraw.setPenColor(Color.BLACK);
-        StdDraw.disableDoubleBuffering();
+        StdDraw.enableDoubleBuffering();
     }
 
     public void createGlider(int i, int j) {
@@ -28,6 +28,16 @@ public class BorderlessUniverse {
         universe.add(new Cell(i + 1, j + 2));
         universe.add(new Cell(i, j + 2));
         universe.add(new Cell(i - 1, j + 2));
+
+        universe.add(new Cell(i + 40, j + 50));
+        universe.add(new Cell(i + 40, j + 51));
+        universe.add(new Cell(i + 41, j + 50));
+        universe.add(new Cell(i + 41, j + 51));
+    }
+
+    //TODO: random generation
+    public void randomize() {
+        
     }
 
     public void getNextGen() {
