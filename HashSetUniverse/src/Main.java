@@ -12,7 +12,7 @@ public class Main {
         long frame;
         BorderlessUniverse universe = new BorderlessUniverse();
 
-        universe.randomize(1);
+        universe.randomize(0.5);
 
         while (true) {
             start = System.currentTimeMillis();

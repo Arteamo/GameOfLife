@@ -44,8 +44,9 @@ public class BorderlessUniverse {
 
     public void randomize(double density) {
         double chance;
-        for (int i = -200; i < 200; i++) {
-            for (int j = -200; j < 200; j++) {
+        int size = 100;
+        for (int i = -size; i < size; i++) {
+            for (int j = -size; j < size; j++) {
                 chance = Math.random();
                 if (chance >= (1 - density)) {
                     universe.add(new Cell(i, j));
@@ -103,8 +104,6 @@ public class BorderlessUniverse {
             if (universe.contains(new Cell(x + 1, y + 1))) {
                 cnt++;
             }
-            neighbourCounter.put(c, cnt);
-            cnt = 0;
         }
     }
 
