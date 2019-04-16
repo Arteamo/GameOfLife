@@ -78,31 +78,35 @@ public class BorderlessUniverse {
         int x;
         int y;
         for (Cell c : p.localRegion()) {
-            x = c.getX();
-            y = c.getY();
-            if (universe.contains(new Cell(x - 1, y - 1))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x - 1, y))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x - 1, y + 1))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x, y - 1))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x, y + 1))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x + 1, y - 1))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x + 1, y))) {
-                cnt++;
-            }
-            if (universe.contains(new Cell(x + 1, y + 1))) {
-                cnt++;
+            if (!neighbourCounter.containsKey(c)) {
+                x = c.getX();
+                y = c.getY();
+                if (universe.contains(new Cell(x - 1, y - 1))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x - 1, y))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x - 1, y + 1))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x, y - 1))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x, y + 1))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x + 1, y - 1))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x + 1, y))) {
+                    cnt++;
+                }
+                if (universe.contains(new Cell(x + 1, y + 1))) {
+                    cnt++;
+                }
+                neighbourCounter.put(c, cnt);
+                cnt = 0;
             }
         }
     }
