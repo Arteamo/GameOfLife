@@ -12,14 +12,14 @@ public class Main {
         long frame;
         BorderlessUniverse universe = new BorderlessUniverse();
 
-        universe.randomize(0.5);
+        universe.randomize(0.4, 200);
 
         while (true) {
             start = System.currentTimeMillis();
             universe.draw();
             universe.getNextGen();
             frame = System.currentTimeMillis() - start;
-            universe.fps(frame);
+            universe.info(frame);
         }
     }
 }

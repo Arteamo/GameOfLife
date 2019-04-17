@@ -34,17 +34,8 @@ public class BorderlessUniverse {
         StdDraw.enableDoubleBuffering();
     }
 
-//    public void createGlider(int i, int j) {
-//        universe.add(new Cell(i, j));
-//        universe.add(new Cell(i + 1, j + 1));
-//        universe.add(new Cell(i + 1, j + 2));
-//        universe.add(new Cell(i, j + 2));
-//        universe.add(new Cell(i - 1, j + 2));
-//    }
-
-    public void randomize(double density) {
+    public void randomize(double density, int size) {
         double chance;
-        int size = 100;
         for (int i = -size; i < size; i++) {
             for (int j = -size; j < size; j++) {
                 chance = Math.random();
@@ -57,9 +48,7 @@ public class BorderlessUniverse {
 
     public void getNextGen() {
         int cnt;
-        for (Cell c : universe) {
-            getNeighbours(c);
-        }
+        getNeighbours();
         for (Cell c : neighbourCounter.keySet()) {
             cnt = neighbourCounter.get(c);
             if ((!universe.contains(c)) && (cnt == 3)) {
@@ -73,40 +62,22 @@ public class BorderlessUniverse {
         neighbourCounter.clear();
     }
 
-    private void getNeighbours(Cell p) {
-        int cnt = 0;
-        int x;
-        int y;
-        for (Cell c : p.localRegion()) {
-            if (!neighbourCounter.containsKey(c)) {
-                x = c.getX();
-                y = c.getY();
-                if (universe.contains(new Cell(x - 1, y - 1))) {
-                    cnt++;
+    private void getNeighbours() {
+        int cnt;
+        int value;
+        for (Cell c : universe) {
+            for (Cell p : c.localRegion()) {
+                if (!neighbourCounter.containsKey(p)) {
+                    if (!universe.contains(p)) {
+                        value = 1;
+                    } else {
+                        value = 0;
+                    }
+                    neighbourCounter.put(p, value);
+                } else {
+                    cnt = neighbourCounter.get(p);
+                    neighbourCounter.put(p, cnt + 1);
                 }
-                if (universe.contains(new Cell(x - 1, y))) {
-                    cnt++;
-                }
-                if (universe.contains(new Cell(x - 1, y + 1))) {
-                    cnt++;
-                }
-                if (universe.contains(new Cell(x, y - 1))) {
-                    cnt++;
-                }
-                if (universe.contains(new Cell(x, y + 1))) {
-                    cnt++;
-                }
-                if (universe.contains(new Cell(x + 1, y - 1))) {
-                    cnt++;
-                }
-                if (universe.contains(new Cell(x + 1, y))) {
-                    cnt++;
-                }
-                if (universe.contains(new Cell(x + 1, y + 1))) {
-                    cnt++;
-                }
-                neighbourCounter.put(c, cnt);
-                cnt = 0;
             }
         }
     }
@@ -151,13 +122,14 @@ public class BorderlessUniverse {
             y = c.getY();
             StdDraw.filledRectangle(x - xShift, y - yShift, 0.5, 0.5);
         }
-
         StdDraw.show();
     }
 
-    public void fps(long frame) {
+    public void info(long frame) {
         String time = "Frame: " + frame + "ms ";
-        String fps = "Fps: " + (int) (1000.0 / frame);
-        System.out.println(time + " " + fps);
+        String fps = "Fps: " + (int) (1000.0 / (frame + 1));
+        String elements = "Elements: " + universe.size();
+        System.out.println(time + " " + fps + " " + elements);
     }
 }
+
