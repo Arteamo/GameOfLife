@@ -7,77 +7,79 @@ import java.awt.*;
 public class Universe {
     private int width;
     private int height;
-    private int[][] gen;
-    private int[][] nextGen;
+    private int state;
+    private int[][][] gen;
 
     public Universe(int height, int width) {
         this.width = width;
         this.height = height;
-        gen = new int[height][width];
-        nextGen = new int[height][width];
+        this.state = 0;
+        gen = new int[height][width][2];
         StdDraw.setCanvasSize(width, height);
         StdDraw.setXscale(0, width);
         StdDraw.setYscale(0, height);
         StdDraw.enableDoubleBuffering();
     }
 
-    public void randomize(double generationKey) {
+    public void randomize(double density) {
+        double chance;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                gen[i][j] = (int) (Math.round(Math.random() - generationKey));
+                chance = Math.random();
+                if (chance >= (1 - density)) {
+                    gen[i][j][state] = 1;
+                }
             }
         }
     }
 
     public void createGlider(int i, int j) {
-        gen[i][j] = 1;
-        gen[i + 1][j + 1] = 1;
-        gen[i + 1][j + 2] = 1;
-        gen[i][j + 2] = 1;
-        gen[i - 1][j + 2] = 1;
+        gen[i][j][0] = 1;
+        gen[i + 1][j + 1][0] = 1;
+        gen[i + 1][j + 2][0] = 1;
+        gen[i][j + 2][0] = 1;
+        gen[i - 1][j + 2][0] = 1;
     }
 
     private int getNeighbours(int iTop, int iMid, int iBot, int jLeft, int jMid, int jRight) {
         int cnt = 0;
-        cnt += gen[iTop][jLeft];
-        cnt += gen[iTop][jMid];
-        cnt += gen[iTop][jRight];
-        cnt += gen[iMid][jLeft];
-        cnt += gen[iMid][jRight];
-        cnt += gen[iBot][jLeft];
-        cnt += gen[iBot][jMid];
-        cnt += gen[iBot][jRight];
+        cnt += gen[iTop][jLeft][state];
+        cnt += gen[iTop][jMid][state];
+        cnt += gen[iTop][jRight][state];
+        cnt += gen[iMid][jLeft][state];
+        cnt += gen[iMid][jRight][state];
+        cnt += gen[iBot][jLeft][state];
+        cnt += gen[iBot][jMid][state];
+        cnt += gen[iBot][jRight][state];
         return cnt;
     }
 
     private int getNeighboursTorus(int i, int j) {
-        int cnt = 0;
-        if ((i != 0) && (i != height - 1) && (j != 0) && (j != width - 1)) {
-            cnt = getNeighbours(i - 1, i, i + 1, j - 1, j, j + 1);
-        }
-        if ((i == 0) && (j == 0)) {
-            cnt = getNeighbours(height - 1, 0, i + 1, width - 1, 0, j + 1);
-        }
-        if ((i == 0) && ((j != 0) && (j != width - 1))) {
-            cnt = getNeighbours(height - 1, 0, i + 1, j - 1, j, j + 1);
-        }
-        if ((i == 0) && (j == width - 1)) {
-            cnt = getNeighbours(height - 1, 0, i + 1, j - 1, 0, 0);
-        }
-        if (((i != 0) && (i != height - 1)) && (j == 0)) {
-            cnt = getNeighbours(i + 1, i, i - 1, width - 1, 0, 1);
-        }
-        if (((i != 0) && (i != height - 1)) && (j == width - 1)) {
-            cnt = getNeighbours(i + 1, i, i - 1, j - 1, j, 0);
-        }
-        if ((i == height - 1) && (j == 0)) {
-            cnt = getNeighbours(i - 1, i, 0, width - 1, 0, j + 1);
-        }
-        if ((i == height - 1) && ((j != 0) && (j != width - 1))) {
-            cnt = getNeighbours(i - 1, i, 0, j - 1, j, j + 1);
-        }
-        if ((i == height - 1) && (j == width - 1)) {
-            cnt = getNeighbours(i - 1, i, 0, j - 1, j, 0);
+        int cnt;
+        if (i == 0) {
+            if (j == 0) {
+                cnt = getNeighbours(height - 1, 0, i + 1, width - 1, 0, j + 1);
+            } else if (j == width - 1) {
+                cnt = getNeighbours(height - 1, 0, i + 1, j - 1, j, 0);
+            } else {
+                cnt = getNeighbours(height - 1, 0, i + 1, j - 1, j, j + 1);
+            }
+        } else if (i == height - 1) {
+            if (j == 0) {
+                cnt = getNeighbours(i - 1, i, 0, width - 1, 0, j + 1);
+            } else if (j == width - 1) {
+                cnt = getNeighbours(i - 1, i, 0, j - 1, j, 0);
+            } else {
+                cnt = getNeighbours(i - 1, i, 0, j - 1, j, j + 1);
+            }
+        } else {
+            if (j == 0) {
+                cnt = getNeighbours(i + 1, i, i - 1, width - 1, 0, 1);
+            } else if (j == width - 1) {
+                cnt = getNeighbours(i + 1, i, i - 1, j - 1, j, 0);
+            } else {
+                cnt = getNeighbours(i - 1, i, i + 1, j - 1, j, j + 1);
+            }
         }
         return cnt;
     }
@@ -87,10 +89,10 @@ public class Universe {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 neighbours = getNeighboursTorus(i, j);
-                if (((gen[i][j] == 1) && (neighbours == 2)) || (neighbours == 3)) {
-                    nextGen[i][j] = 1;
+                if (((gen[i][j][state] == 1) && (neighbours == 2)) || (neighbours == 3)) {
+                    gen[i][j][state ^ 1] = 1;
                 } else {
-                    nextGen[i][j] = 0;
+                    gen[i][j][state ^ 1] = 0;
                 }
             }
         }
@@ -98,9 +100,7 @@ public class Universe {
     }
 
     private void update() {
-        for (int i = 0; i < height; i++) {
-            System.arraycopy(nextGen[i], 0, gen[i], 0, width);
-        }
+        state = state ^ 1;
     }
 
     public void draw(long frame) {
@@ -108,7 +108,7 @@ public class Universe {
         StdDraw.setPenColor(Color.BLACK);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (gen[i][j] == 1) {
+                if (gen[i][j][state] == 1) {
                     StdDraw.filledRectangle(j, i, 0.5, 0.5);
                 }
             }
