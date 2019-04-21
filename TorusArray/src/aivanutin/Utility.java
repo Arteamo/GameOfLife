@@ -1,3 +1,9 @@
+/*
+ * Developed by Artyom Ivanyutin on 21.04.19 12:54.
+ * Copyright (c) 2019.
+ * All rights reserved.
+ */
+
 package aivanutin;
 
 import edu.princeton.cs.introcs.StdDraw;
